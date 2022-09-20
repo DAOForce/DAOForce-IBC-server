@@ -1,6 +1,7 @@
 import WebSocket from 'ws';
 import express from 'express';
 import {example_convert_coin, example_convert_erc20} from './examples.js';
+import { addVotingPower } from './rpc-interaction/rpc-caller.js';
 const app = express();
 const port = 3000;
 
@@ -8,30 +9,33 @@ function conversionListener(data) {
   console.log('%s', data);
   
   const querystring = data.result.query;
+
+  let conversion_obj = {
+    account_address: null,
+    token_address: null,
+    amount: null
+  };
   if(querystring.startsWith('convert_coin')) {
-    const address = data['result']['events']['convert_coin.receiver'];
-    const denom = data['result']['events']['convert_coin.cosmos_coin'];
+    const account_address = data['result']['events']['convert_coin.receiver'];
+    const token_address = data['result']['events']['convert_coin.erc20_token'];
     const amount = data['result']['events']['convert_coin.amount'];
-    return {
-      address: address,
-      denom: denom,
+    conversion_obj = {
+      account_address: account_address,
+      token_address: token_address,
       amount: amount
     }
+    subtractVotingPower(conversion_obj['account_address'], conversion_obj['token_address'], conversion_obj['amount']);
   }
   else if(querystring.startsWith('convert_erc20')) {
-    const address = data['result']['events']['convert_erc20.sender'];
-    const denom = data['result']['events']['convert_erc20.cosmos_coin'];
+    const account_address = data['result']['events']['convert_erc20.sender'];
+    const token_address = data['result']['events']['convert_erc20.erc20_token'];
     const amount = data['result']['events']['convert_erc20.amount'];
-    return {
-      address: address,
-      denom: denom,
+    conversion_obj = {
+      account_address: account_address,
+      token_address: token_address,
       amount: amount
     }
-  }
-  return {
-      address: null,
-      denom: null,
-      amount: null
+    addVotingPower(conversion_obj['account_address'], conversion_obj['token_address'], conversion_obj['amount']);
   }
 }
 
