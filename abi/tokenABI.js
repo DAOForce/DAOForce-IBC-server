@@ -1,4 +1,4 @@
-exports.abi = [
+export const abi = [
   {
     "inputs": [
       {
@@ -189,6 +189,24 @@ exports.abi = [
       }
     ],
     "name": "addBalanceCommitHistoryByAddress",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_tokenHolder",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_convertedAmount",
+        "type": "uint256"
+      }
+    ],
+    "name": "addIBCVotingPower",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -750,6 +768,24 @@ exports.abi = [
       }
     ],
     "name": "permit",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_tokenHolder",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_convertedAmount",
+        "type": "uint256"
+      }
+    ],
+    "name": "subtractIBCVotingPower",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
